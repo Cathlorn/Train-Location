@@ -46,6 +46,79 @@ public class Quat4d {
 		
 		return sum;
 	}
+	
+	public Quat4d conjugate(){
+		return conjugate(this);
+	}
+	
+	public static Quat4d conjugate(Quat4d quaternion){
+		Quat4d conjugateQuaternion = new Quat4d(quaternion.w, -1*quaternion.x,
+				-1*quaternion.y, -1*quaternion.z);
+
+		return conjugateQuaternion;
+	}
+	
+	public double norm(){
+		return norm(this);
+	}
+	
+	public static double norm(Quat4d quaternion){
+		double wSquared = quaternion.w*quaternion.w;
+		double xSquared = quaternion.x*quaternion.x;
+		double ySquared = quaternion.y*quaternion.y;
+		double zSquared = quaternion.z*quaternion.z;
+		double quaternionNorm = Math.sqrt(wSquared + xSquared + ySquared + zSquared);
+		
+		return quaternionNorm;
+	}
+	
+	public Quat4d multiply(Quat4d quaternion){
+		return multiply(this, quaternion);
+	}
+	
+	public static Quat4d multiply(Quat4d firstQuaternion, Quat4d secondQuaternion){
+		Quat4d productQuaternion = new Quat4d();
+
+		productQuaternion.w = (firstQuaternion.w*secondQuaternion.w) - (firstQuaternion.x*secondQuaternion.x) - (firstQuaternion.y * secondQuaternion.y) - (firstQuaternion.z * secondQuaternion.z);
+		productQuaternion.x = (firstQuaternion.w*secondQuaternion.x) + (firstQuaternion.x*secondQuaternion.w) + (firstQuaternion.y * secondQuaternion.z) - (firstQuaternion.z * secondQuaternion.y);
+		productQuaternion.y = (firstQuaternion.w*secondQuaternion.y) - (firstQuaternion.x*secondQuaternion.z) + (firstQuaternion.y * secondQuaternion.w) + (firstQuaternion.z * secondQuaternion.x);
+		productQuaternion.z = (firstQuaternion.w*secondQuaternion.z) + (firstQuaternion.x*secondQuaternion.y) - (firstQuaternion.y * secondQuaternion.x) + (firstQuaternion.z * secondQuaternion.w);
+		
+		
+		return productQuaternion;
+	}
+	
+	public Quat4d multiply(double scalar){
+		
+		return multiply(this, scalar);
+	}
+	
+	public static Quat4d multiply(Quat4d quaternion, double scalar){
+		Quat4d productQuaternion = new Quat4d();
+		
+		productQuaternion.w = quaternion.w*scalar;
+		productQuaternion.x = quaternion.x*scalar;
+		productQuaternion.y = quaternion.y*scalar;
+		productQuaternion.z = quaternion.z*scalar;
+		
+		return productQuaternion;
+	}
+	
+	public Quat4d inverse(){
+		return inverse(this);
+	}
+	
+	public static Quat4d inverse(Quat4d quaternion){
+		Quat4d inverseQuaternion;
+		
+		double norm = quaternion.norm();
+		double normSquared = norm * norm;
+		
+		inverseQuaternion = quaternion.conjugate();
+		inverseQuaternion = inverseQuaternion.multiply(1/normSquared);
+		
+		return inverseQuaternion;
+	}
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()

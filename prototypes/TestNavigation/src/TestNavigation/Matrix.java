@@ -1,5 +1,7 @@
 package TestNavigation;
 
+import java.util.Arrays;
+
 ///Class represents a matrix of floating point numbers
 public class Matrix {
 	
@@ -118,6 +120,34 @@ public class Matrix {
 		}
 	}
 	
+	public Matrix transpose(){
+		
+		return transpose(this);
+	}
+	
+	public static Matrix transpose(Matrix matrix){
+		Matrix transposeMatrix = new Matrix(matrix.numberOfColumns, matrix.numberOfRows);
+		
+		for(int i = 0; i < matrix.numberOfRows; i++)
+		{
+			for(int j = 0; j < matrix.numberOfColumns; j++){
+				transposeMatrix.matrix[j][i] = matrix.matrix[i][j];
+			}
+		}
+		
+		return transposeMatrix;
+	}
+	
+	public static Matrix identity(int size) {
+		Matrix identityMatrix = new Matrix(size, size);
+		
+		for(int i = 0; i < size; i++){
+			identityMatrix.matrix[i][i] = 1;
+		}
+		
+		return identityMatrix;
+	}
+
 	///Returns the number of columns in the matrix
 	public int getNumberOfColumns(){
 		return numberOfColumns;
@@ -146,6 +176,40 @@ public class Matrix {
 		if((row>=0&& row<numberOfRows)&&(column >=0 && column < numberOfColumns)){
 			matrix[row][column] = value;
 		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Arrays.hashCode(matrix);
+		result = prime * result + numberOfColumns;
+		result = prime * result + numberOfRows;
+		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Matrix other = (Matrix) obj;
+		if (!Arrays.deepEquals(matrix, other.matrix))
+			return false;
+		if (numberOfColumns != other.numberOfColumns)
+			return false;
+		if (numberOfRows != other.numberOfRows)
+			return false;
+		return true;
 	}
 
 }

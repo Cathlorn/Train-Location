@@ -98,7 +98,8 @@ public class RotationMonitor {
 		return eulerAngleRotation;
 	}
 	
-	 public static final Quat4d rotate( double bank, double heading, double attitude) {
+	 //convert from Euler Angle NED to quaternion
+	 public static final Quat4d convertFromEulerAngleToQuaternion( double bank, double heading, double attitude) {
 		    // Assuming the angles are in radians.
 		    double c1 = Math.cos(heading);
 		    double s1 = Math.sin(heading);

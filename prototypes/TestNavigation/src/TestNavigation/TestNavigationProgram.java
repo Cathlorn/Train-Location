@@ -107,7 +107,23 @@ public class TestNavigationProgram {
 			
 			System.out.println(String.format("%f radians around Earth x axis", inertialFrameRotation.getRadiansRotationAlongXAxis()));
 			System.out.println(String.format("%f radians around Earth y axis", inertialFrameRotation.getRadiansRotationAlongYAxis()));
-			System.out.println(String.format("%f radians around Earth z axis", inertialFrameRotation.getRadiansRotationAlongZAxis()));			
+			System.out.println(String.format("%f radians around Earth z axis", inertialFrameRotation.getRadiansRotationAlongZAxis()));
+			
+			Quat4d initialRotationQuaternion = RotationMonitor.convertFromEulerAngleToQuaternion(initialBodyFrameOrientation.getRadiansRotationAlongXAxis(),
+					initialBodyFrameOrientation.getRadiansRotationAlongYAxis(),
+					initialBodyFrameOrientation.getRadiansRotationAlongZAxis());
+			
+			Quat4d bodyFrameRotationQuaternion = RotationMonitor.convertFromEulerAngleToQuaternion(inertialFrameRotation.getRadiansRotationAlongXAxis(),
+					inertialFrameRotation.getRadiansRotationAlongYAxis(),
+					inertialFrameRotation.getRadiansRotationAlongZAxis());
+			
+			Quat4d compositeRotationQuaternion = initialRotationQuaternion.multiply(bodyFrameRotationQuaternion);
+			
+			System.out.println("Estimate Earth orientation by attempting to use only quaternions");
+			
+			EulerAngleRotation compositeEulerAngleRotation = RotationMonitor.convertFromQuaternionToEulerAngle(compositeRotationQuaternion);
+			
+			PrintRotation(compositeEulerAngleRotation);
 		}
 		
 		boolean testPassed = true;
@@ -126,14 +142,32 @@ public class TestNavigationProgram {
 
 	}
 	
+	public static void TestQuaternionMultiplication(){
+		Quat4d quat4d = new Quat4d(1,0,1,0);
+		Quat4d quat4d2 = new Quat4d(1,0.5,0.5, 0.75);
+		Quat4d expectedProduct = new Quat4d(0.5, 1.25, 1.5, 0.25);
+		Quat4d prod = quat4d.multiply(quat4d2);
+		
+		boolean areEqual = prod.equals(expectedProduct);
+		
+		if(areEqual)
+			System.out.println("Are Equal");
+		else
+			System.out.println("Are NOT Equal");		
+	}
+	
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		
-		Quat4d quat4d = RotationMonitor.rotate(0, 0, Math.PI/2);
+		//Quat4d quat4d = RotationMonitor.convertFromEulerAngleToQuaternion(0, 0, Math.PI/2);
+		//Quat4d quat4d2 = RotationMonitor.convertFromEulerAngleToQuaternion(0, Math.PI/2, 0);
+		//Quat4d prod = quat4d.multiply(quat4d.inverse());
 		
-		EulerAngleRotation rotation = RotationMonitor.convertFromQuaternionToEulerAngle(quat4d);
+
+		
+		EulerAngleRotation rotation = RotationMonitor.convertFromQuaternionToEulerAngle(prod);
 		
 		PrintRotation(rotation);
 	
