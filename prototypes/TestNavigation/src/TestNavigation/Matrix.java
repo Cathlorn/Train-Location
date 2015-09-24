@@ -43,7 +43,7 @@ public class Matrix {
 				{
 					for(int k=0; k <firstMatrix.numberOfColumns; k++){
 						
-						productMatrix.matrix[i][k] += firstMatrix.matrix[i][k] * secondMatrix.matrix[k][j];	
+						productMatrix.matrix[i][j] += firstMatrix.matrix[i][k] * secondMatrix.matrix[k][j];	
 					}
 				}
 			}
