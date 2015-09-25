@@ -39,4 +39,28 @@ public class EulerAngleRotation {
 		return radiansRotationAlongZAxis;
 	}
 	
+private static double round(double initialValue, int numberOfFloatingPointDigits){
+		
+		int divisor = 10 *numberOfFloatingPointDigits;
+		
+		int dividend = (int) (initialValue * divisor);
+		
+		return ((double)dividend)/((double) divisor);
+		
+	}
+
+    public EulerAngleRotation round(){
+    	return round(8);
+    }
+
+    public EulerAngleRotation round(int numberOfFloatingPointDigits){
+    	return round(this, numberOfFloatingPointDigits);
+    }
+
+    public static EulerAngleRotation round(EulerAngleRotation eulerAngleRotation, int numberOfFloatingPointDigits){
+    	return new EulerAngleRotation(round(eulerAngleRotation.getRadiansRotationAlongXAxis(), numberOfFloatingPointDigits), 
+    			round(eulerAngleRotation.getRadiansRotationAlongYAxis(), numberOfFloatingPointDigits),
+    			round(eulerAngleRotation.getRadiansRotationAlongZAxis(), numberOfFloatingPointDigits));
+    }
+	
 }
